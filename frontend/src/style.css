@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* FUNDO DO SITE */
+
+body {
+
+  @apply font-sans;
+
+  background-image: url('/fronteira-de-jardim-de-infancia-brincalhao-com-rabiscos-de-lapis_107791-32012.avi');
+
+  background-size: cover;
+
+  background-position: center;
+
+  background-repeat: no-repeat;
+
+  background-attachment: fixed;
+
+  min-height: 100vh;
+}
+
+/* ESCURECER LEVEMENTE O FUNDO */
+
+body::before {
+
+  content: "";
+
+  position: fixed;
+
+  inset: 0;
+
+  background: rgba(0, 0, 0, 0.25);
+
+  z-index: -1;
+}
+
+/* CARDS */
+
+.card-infantil {
+
+  @apply bg-white rounded-3xl border-b-8 border-gray-200 p-6 shadow-xl;
+
+  backdrop-filter: blur(4px);
+}
