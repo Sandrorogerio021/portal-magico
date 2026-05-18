@@ -3,7 +3,6 @@
 
     <div class="max-w-7xl mx-auto">
 
-      <!-- TOPO -->
       <div class="flex justify-between items-center mb-8">
 
         <div>
@@ -25,7 +24,6 @@
 
       </div>
 
-      <!-- TABELA -->
       <div class="bg-white rounded-3xl shadow-xl overflow-hidden">
 
         <table class="w-full">
@@ -127,45 +125,39 @@ import { ref, onMounted } from "vue";
 
 const relatorio = ref([]);
 
+// 🌍 URL Dinâmica da API (Lê a variável da nuvem ou assume o localhost)
+const urlBase = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 const carregar = async () => {
-
   try {
-
-    const res = await axios.get(
-      "http://localhost:3000/dashboard-professor"
-    );
+    // 🔗 Conectando diretamente ao link correto da API usando Template Literals
+    const res = await axios.get(`${urlBase}/dashboard-professor`);
 
     relatorio.value = res.data;
 
-    console.log(res.data);
+    console.log("Dados atualizados vindos de:", urlBase);
 
   } catch (err) {
-
-    console.log(err);
+    console.log("Erro ao carregar dados do servidor:", err);
   }
 };
 
 const formatar = (data) => {
-
-  return new Date(data)
-    .toLocaleString("pt-BR");
+  if (!data) return "-";
+  return new Date(data).toLocaleString("pt-BR");
 };
 
 const sair = () => {
-
   localStorage.clear();
-
   location.reload();
 };
 
 onMounted(() => {
-
   carregar();
 
+  // Atualização em tempo real segura a cada 10 segundos
   setInterval(() => {
-
     carregar();
-
-  }, 1000);
+  }, 10000);
 });
 </script>
