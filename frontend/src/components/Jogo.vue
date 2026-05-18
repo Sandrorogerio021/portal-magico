@@ -234,7 +234,7 @@ const gerarPergunta = () => {
 };
 
 /* ==========================
-   RESPONDER
+   RESPONDER (VERSÃO CORRIGIDA)
 ========================== */
 
 const responder = async (valor) => {
@@ -273,13 +273,20 @@ const responder = async (valor) => {
   /* SALVAR NO BANCO */
 
   try {
+    // Pegamos o ID direto do localStorage na hora do clique para garantir que ele exista
+    const idAtualizado = localStorage.getItem("alunoId");
+
+    if (!idAtualizado) {
+      console.log("Erro: Não foi possível encontrar o ID do aluno conectado.");
+      return;
+    }
 
     // Utilizando a variável dinâmica urlBase
     await axios.post(
       `${urlBase}/salvar-resposta`,
       {
-
-        aluno_id: alunoId,
+        // Forçamos o ID a ir como número inteiro para o banco de dados aceitar
+        aluno_id: parseInt(idAtualizado, 10),
 
         pergunta: pergunta.value,
 
@@ -289,17 +296,16 @@ const responder = async (valor) => {
 
         pontos:
           correta ? 10 : 0
-
       }
     );
 
     console.log(
-      "Resposta salva"
+      "Resposta salva com absoluto sucesso!"
     );
 
   } catch (err) {
 
-    console.log(err);
+    console.log("Erro ao salvar no banco do Render:", err);
   }
 
   /* NOVA PERGUNTA */
